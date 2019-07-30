@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import './App.css';
 
+const StarDisplay = props => (
+  <>
+  {utils.range(1, props.count).map(starId =>
+    <div key={starId} className="star" />
+  )}
+  </>
+)
+
 const PlayNumber = props => (
   <button className="number" onClick={() => console.log('Num', props.number)}>
   {props.number}
@@ -16,9 +24,7 @@ const App = () => {
       </div>
       <div className="body">
         <div className="left">
-          {utils.range(1, stars).map(starId =>
-            <div key={starId} className="star" />
-          )}
+          <StarDisplay count={stars}/>
         </div>
         <div className="right">
           {utils.range(1, 9).map(number =>
