@@ -35,7 +35,7 @@ const App = () => {
   const [secondsLeft, setSecondsLeft] = useState(10);
 
   useEffect(() => {
-    if (secondsLeft > 0) {
+    if (secondsLeft > 0 && availableNums.length > 0) {
       const timerId = setTimeout(() => {
         setSecondsLeft(secondsLeft - 1);
       }, 1000);
@@ -66,7 +66,7 @@ const App = () => {
   }
 
   const onNumberClick = (number, currentStatus) => {
-    if (currentStatus == 'used') {
+    if (gameStatus !== 'active' || currentStatus == 'used') {
       return;
     }
     const newCandidateNums = 
