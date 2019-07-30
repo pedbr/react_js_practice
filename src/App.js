@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import './App.css';
 
+const Number = props => (
+  <button className="number">{props.number}</button>
+);
+
 const App = () => {
   const [stars, setStars] = useState(utils.random(1, 9));
   return (
@@ -16,7 +20,7 @@ const App = () => {
         </div>
         <div className="right">
           {utils.range(1, 9).map(number =>
-            <button key={number} className="number">{number}</button>
+            <Number key={number} number={number} />
           )}
         </div>
       </div>
