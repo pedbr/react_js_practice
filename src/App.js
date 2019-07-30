@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import './App.css';
 
-const Number = props => (
-  <button className="number">{props.number}</button>
+const PlayNumber = props => (
+  <button className="number" onClick={() => console.log('Num', props.number)}>
+  {props.number}
+  </button>
 );
 
 const App = () => {
@@ -20,7 +22,7 @@ const App = () => {
         </div>
         <div className="right">
           {utils.range(1, 9).map(number =>
-            <Number key={number} number={number} />
+            <PlayNumber key={number} number={number} />
           )}
         </div>
       </div>
