@@ -33,9 +33,10 @@ const App = () => {
 
   useEffect(() => {
     if (secondsLeft > 0) {
-      setTimeout(() => {
+      const timerId = setTimeout(() => {
         setSecondsLeft(secondsLeft - 1);
       }, 1000);
+      return () => clearTimeout(timerId);
    }
   });
 
