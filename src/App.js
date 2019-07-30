@@ -13,18 +13,25 @@ const PlayNumber = props => (
   <button 
     className="number" 
     style={{ backgroundColor: colors[props.status] }}
-    onClick={() => console.log('Num', props.number)}
+    onClick={() => props.onClick(props.number, props.status)}
   >
     {props.number}
   </button>
 );
 
+const PlayAgain = props => (
+  <div className="game-done">
+    <button>Play Again</button>
+  </div>
+)
+
 const App = () => {
   const [stars, setStars] = useState(utils.random(1, 9));
-  const [availableNums, setAvailableNums] = useState([1, 2, 3, 4, 5]);
-  const [candidateNums, setCandidateNums] = useState([2, 3]);
+  const [availableNums, setAvailableNums] = useState(utils.range(1, 9));
+  const [candidateNums, setCandidateNums] = useState([]);
 
   const candidatesAreWrong = utils.sum(candidateNums) > stars;
+  const gameIsDone = availableNums.length === 0;
 
   const numberStatus = (number) => {
     if (!availableNums.includes(number)) {
@@ -36,6 +43,26 @@ const App = () => {
     return 'available';
   }
 
+  const onNumberClick = (number, currentStatus) => {
+    if (currentStatus == 'used') {
+      return;
+    }
+    const newCandidateNums = 
+      currentStatus === 'available'
+      ? candidateNums.concat(number)
+      : candidateNums.filter(cn => cn !== number)
+    if (utils.sum(newCandidateNums) !== stars) {
+      setCandidateNums(newCandidateNums);
+    } else {
+      const newAvailableNums = availableNums.filter(
+        n => !newCandidateNums.includes(n)
+      );
+      setStars(utils.randomSumIn(newAvailableNums, 9));
+      setAvailableNums(newAvailableNums);
+      setCandidateNums([]);
+    }
+  }
+
   return (
     <div className="game">
       <div className="help">
@@ -43,14 +70,20 @@ const App = () => {
       </div>
       <div className="body">
         <div className="left">
-          <StarDisplay count={stars}/>
+          {gameIsDone ? (
+            <PlayAgain />
+          ) : (
+            <StarDisplay count={stars}/>
+          )}
+          
         </div>
         <div className="right">
           {utils.range(1, 9).map(number =>
             <PlayNumber 
               key={number}
               status={numberStatus(number)}
-              number={number} 
+              number={number}
+              onClick={onNumberClick}
             />
           )}
         </div>
